@@ -41,7 +41,7 @@ def drop_duplicates(df: list) -> list:
 
 def acces_mongo_base(db: str = "ZMS",collection: str ="profile"):
     """Returning pointer for mongoDB"""
-    conn = connect()
+    conn = con()
     db = conn[db]
     return db[collection].find({})
 
