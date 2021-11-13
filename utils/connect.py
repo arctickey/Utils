@@ -30,10 +30,12 @@ def save_mongo(df: dict, db: str = "ZMS", collection: str = "profile"):
     return True
 
 
-def acces_mongo_base(db: str = "ZMS",collection: str ="profile"):
+
+
+
+def acces_mongo_base(db: str = "ZMS", collection: str = "profile"):
+
     """Returning pointer for mongoDB"""
     conn = connect()
     db = conn[db]
     return db[collection].find({})
-
-
