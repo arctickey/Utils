@@ -17,6 +17,7 @@ def load_kit(db, kit_name: str):
     """Loads kit from the kits' collection.
     :param db: database connection to client.ZMS
     :param kit_name: name of the kit passed during inserting
+    :returns: kit in dictionary type
     """
     kit = db.kits.find_one({"name": kit_name})
     if kit is None:
