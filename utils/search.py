@@ -1,5 +1,6 @@
 from utils.connect import acces_mongo_base, connect, save_mongo
 
+import pandas as pd 
 
 def eval_sample(sample, pattern, keys, nr_of_errors_possible=0):
     """
@@ -57,15 +58,56 @@ def insert_with_drop_dubs(record_to_insert:dict):
     db = connect()
     profiles, nr_of_errors = mongoDB_search(record_to_insert)
     if len(nr_of_errors) == 0 :
-        save_mongo(record_to_insert)
+        dict_to_insert = {}
+        dict_to_insert['allels']= record_to_insert
+
+        save_mongo(dict_to_insert)
         return
     else:
-        if len(profiles[0]["allels"])> len(record_to_insert[0]["allels"]):
-            comment = record_to_insert['allels']
+        if len(profiles[0]["allels"])> len(record_to_insert):
+            comment = record_to_insert
             db['ZMS']['profile'].find_one_and_update({"_id": profiles[0]['_id']}, 
-                                 {"$set": {"Comment": comment}})
+                                 {"$set": {"Duplicate": comment}})
         else :
              comment = profiles[0]['allels']
-             record_to_insert['Comment'] = comment
-             save_mongo(record_to_insert)    
+             
+             dict_to_insert = {}
+             dict_to_insert['allels']= record_to_insert
+             dict_to_insert['Duplicate'] = comment
+             print(dict_to_insert)
+             save_mongo(dict_to_insert)
+             db['ZMS']['profile'].deleteOne({'_id':profiles[0]['_id']}) 
     return
+
+ 
+def population_stats(): 
+    """Return statistinc in the form 
+    {allel_name = {allel_val_1 : [number_of_occurenc, precent_occurenc_in_population ], ...},...}  """
+    pointer = acces_mongo_base()
+
+    allels_dict = {}
+    for i in pointer: 
+        for key,vals in i['allels'].items():
+            if key in allels_dict.keys(): 
+                for k in vals:
+                    allels_dict[key].append(k)
+            else:
+                allels_dict[key] = []
+                for k in vals:
+                    allels_dict[key].append(k)
+    
+    for key,val in allels_dict.items():
+        values_table = pd.Series(val).value_counts().reset_index()
+        sum_of_all = values_table.iloc[:,1].sum()
+        # Creating output dict 
+        new_dict = {}
+        for i in range(values_table.shape[0]): 
+            new_dict[values_table.iloc[i,0]]=[int(values_table.iloc[i,1]),round(values_table.iloc[i,1]/sum_of_all*100,2)]
+        allels_dict[key]=new_dict
+    return allels_dict
+    
+
+
+    
+
+
