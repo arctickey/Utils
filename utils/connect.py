@@ -30,15 +30,6 @@ def save_mongo(df: dict, db: str = "ZMS", collection: str = "profile"):
     return True
 
 
-def drop_duplicates(df: list) -> list:
-    """Drop duplicates from list of dictionaries"""
-    df = [dict(filter(is_id, list(x.items()))) for x in df]
-    no_dups = []
-    for x in df:
-        if x not in no_dups:
-            no_dups.append(x)
-    return no_dups
-
 def acces_mongo_base(db: str = "ZMS",collection: str ="profile"):
     """Returning pointer for mongoDB"""
     conn = connect()
