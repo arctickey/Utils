@@ -1,4 +1,4 @@
-from utils.connect import acces_mongo_base
+from utils.connect import acces_mongo_base, connect, save_mongo
 
 
 def eval_sample(sample, pattern, keys, nr_of_errors_possible=0):
@@ -47,3 +47,25 @@ def mongoDB_search(pattern: dict, nr_of_errors_possible=0):
             nr_of_errors_to_return.append(curr_nr_of_errors)
 
     return id_to_return , nr_of_errors_to_return
+
+
+def insert_with_drop_dubs(record_to_insert:dict):
+    """Remove dupcilates if exist and add record to the data base.
+       Work befoer inserting each record
+       Assuming max one duplicate exist in data base 
+    """
+    db = connect()
+    profiles, nr_of_errors = mongoDB_search(record_to_insert)
+    if len(nr_of_errors) == 0 :
+        save_mongo(record_to_insert)
+        return
+    else:
+        if len(profiles[0]["allels"])> len(record_to_insert[0]["allels"]):
+            comment = record_to_insert['allels']
+            db['ZMS']['profile'].find_one_and_update({"_id": profiles[0]['_id']}, 
+                                 {"$set": {"Comment": comment}})
+        else :
+             comment = profiles[0]['allels']
+             record_to_insert['Comment'] = comment
+             save_mongo(record_to_insert)    
+    return
