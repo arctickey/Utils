@@ -105,6 +105,50 @@ def population_stats():
             new_dict[values_table.iloc[i,0]]=[int(values_table.iloc[i,1]),round(values_table.iloc[i,1]/sum_of_all*100,2)]
         allels_dict[key]=new_dict
     return allels_dict
+
+
+def parrenthod_check(p_father: dict,mother: dict,child: dict): 
+    """Cheking if father is bilogical father
+    IMPORTAN!!! Profiles must be given witouth X/Y allel
+    and as 'allels' from DB
+    first return is IS_FATHER_FLG"""
+    # matherhod check 
+    mother_error_nr = 0 
+    mother_error_allels = []
+    for i in set(mother.keys()).intersection(set(child.keys())):
+        if  len([j for j in mother[i] if j in child[i]]) == 0:
+            mother_error_nr +=1 
+            mother_error_allels.append(i)
+
+    #fatherhod check 
+    father_error_nr = 0 
+    father_error_allels = []
+
+    for i in set(p_father.keys()).intersection(set(child.keys())).difference(set(mother_error_allels)):
+        # Creating posibitys 
+        current_key_possibilites=[
+        [p_father[i][0],mother[i][0]],
+        [p_father[i][1],mother[i][1]],
+        [p_father[i][1],mother[i][0]],
+        [p_father[i][0],mother[i][1]]    
+        ]
+        for j in range(4):
+            current_key_possibilites.append(current_key_possibilites[j][::-1])
+        if not child[i] in current_key_possibilites:
+            father_error_nr +=1 
+            father_error_allels.append(i)
+    
+    if mother_error_nr > 2 : 
+        return 0,mother_error_nr,mother_error_allels,father_error_nr,father_error_allels,'PROBLEM Z MATKĄ'
+    if father_error_nr > 3: 
+        return 0,mother_error_nr,mother_error_allels,father_error_nr,father_error_allels,'PROBLEM Z OJCEM'
+    return 1,mother_error_nr,mother_error_allels,father_error_nr,father_error_allels,'OJCIEC'
+            
+
+
+
+
+
     
 
 
