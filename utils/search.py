@@ -1,4 +1,5 @@
 from utils.connect import acces_mongo_base, connect, save_mongo
+from bson.objectid import ObjectId
 
 import pandas as pd 
 
@@ -75,8 +76,8 @@ def insert_with_drop_dubs(record_to_insert:dict):
              dict_to_insert['allels']= record_to_insert
              dict_to_insert['Duplicate'] = comment
              print(dict_to_insert)
-             save_mongo(dict_to_insert)
-             db['ZMS']['profile'].deleteOne({'_id':profiles[0]['_id']}) 
+             save_mongo([dict_to_insert])
+             db['ZMS']['profile'].deleteOne({'_id':ObjectId(profiles[0]['_id'])}) 
     return
 
  
