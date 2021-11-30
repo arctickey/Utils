@@ -10,21 +10,31 @@ def eval_sample(sample, pattern, keys, nr_of_errors_possible=0):
     """
 
     nr_of_errors = 0
+    allels_with_error = []
     if len(keys) == 0:
-        return 99
+        return 99,0
     for i in keys:
+        error_flg=0
         s_in_p = len([j for j in sample[i] if j in pattern[i]])
         p_in_s = len([j for j in pattern[i] if j in sample[i]])
         if s_in_p ==2 and p_in_s == 1 : 
             nr_of_errors +=1
+            error_flg=1
         if s_in_p == 1: 
             nr_of_errors +=1 
+            error_flg=1
         if s_in_p == 0: 
             nr_of_errors +=2
+            error_flg=1
 
         if nr_of_errors > nr_of_errors_possible:
-            return 99
-    return nr_of_errors
+            return 99,0
+        if error_flg == 1 : 
+            allels_with_error.append(i)
+            print(i)
+            
+        
+    return nr_of_errors, allels_with_error
 
 
 def mongoDB_search(pattern: dict, nr_of_errors_possible=0):
@@ -38,17 +48,20 @@ def mongoDB_search(pattern: dict, nr_of_errors_possible=0):
     nr_of_errors_to_return =[]
     pattern_keys = list(pattern.keys())
     # Do zmany w całym pakiecie 
+    error_allels = []
     for cur_sample in acces_mongo_base():
 
         sample_keys = list(cur_sample['allels'])
 
         keys_to_check = list(set(pattern_keys) & set(sample_keys))
-        curr_nr_of_errors = eval_sample(cur_sample['allels'], pattern, keys_to_check, nr_of_errors_possible)      
+        curr_nr_of_errors, allels_errors = eval_sample(cur_sample['allels'], pattern, keys_to_check, nr_of_errors_possible)      
         if  curr_nr_of_errors <= nr_of_errors_possible:
             id_to_return.append(cur_sample)
             nr_of_errors_to_return.append(curr_nr_of_errors)
+            error_allels.append(allels_errors)
 
-    return id_to_return , nr_of_errors_to_return
+    return id_to_return , nr_of_errors_to_return ,error_allels
+
 
 
 def insert_with_drop_dubs(record_to_insert:dict):
