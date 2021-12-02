@@ -21,8 +21,9 @@ def read_mongo(db: str = "ZMS", collection: str = "profile", no_id: bool = False
     return df
 
 
-def save_mongo(df: dict, db: str = "ZMS", collection: str = "profile"):
+def save_mongo(df: list, db: str = "ZMS", collection: str = "profile"):
     """Read from dict and saves to MongoDB"""
+    assert isinstance(df,list), 'Please pass list of dicts' 
     conn = connect()
     db = conn[db]
     collection = db[collection]
@@ -30,17 +31,11 @@ def save_mongo(df: dict, db: str = "ZMS", collection: str = "profile"):
     return True
 
 
-def drop_duplicates(df: list) -> list:
-    """Drop duplicates from list of dictionaries"""
-    df = [dict(filter(is_id, list(x.items()))) for x in df]
-    no_dups = []
-    for x in df:
-        if x not in no_dups:
-            no_dups.append(x)
-    return no_dups
+
 
 
 def acces_mongo_base(db: str = "ZMS", collection: str = "profile"):
+
     """Returning pointer for mongoDB"""
     conn = connect()
     db = conn[db]
