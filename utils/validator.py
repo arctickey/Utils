@@ -1,7 +1,7 @@
 import re
 
 
-def validate_profile(profile, sex_allels=["AMEL"]):
+def validate_profile(profile, sex_allels=["AMEL"], check_id=False):
     """Validates correctness of the profile record and preprocess input.
     :param profile: profile to validate
         Assumptions:
@@ -11,6 +11,7 @@ def validate_profile(profile, sex_allels=["AMEL"]):
             - dot is used for fractions notation
         Example: {"allels": {"AMEL": ["X", "X"], "example": ["1.1", "2"]}, "opinion": "xyz"}
     :param sex_allels: markers names for allels defining sex i.e. AMEL
+    :param check_id: to determine if ID validation is needed
     :returns:
         - flag - True if profile is correct, False if must be returned to user to correct
         - message - if profile is incorrect - error message to user
@@ -61,8 +62,9 @@ def validate_profile(profile, sex_allels=["AMEL"]):
                     )
 
     # Check sample identifier
-    if len(profile["opinion"]) == 0:
-        return (False, "ERROR: Uzupełnij identyfikator próbki.", profile)
+    if check_id:
+        if len(profile["opinion"]) == 0:
+            return (False, "ERROR: Uzupełnij identyfikator próbki.", profile)
 
     # Positive check and preprocess
     return (True, "Pomyślna walidacja profilu.", profile)
