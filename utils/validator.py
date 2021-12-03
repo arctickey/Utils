@@ -21,6 +21,8 @@ def validate_profile(profile, sex_allels=["AMEL"], check_id=False):
     for key, allel in profile["allels"].items():
         if allel:
             for value in allel:
+                if value is None:
+                    value = ""
                 # Remove spaces
                 value = "".join(value.split())
                 # Check for disallowed characters
