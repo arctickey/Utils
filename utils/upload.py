@@ -1,7 +1,7 @@
 # %%
-from connect import connect, save_mongo
-from read_excel import read_write_txt
-from read_txt import read_write_excel
+from utils.connect import connect, save_mongo
+from utils.read_excel import read_write_excel
+from utils.read_txt import read_write_txt
 
 # %%
 
