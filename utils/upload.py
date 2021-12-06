@@ -10,7 +10,7 @@ def _wipe_database(colllection):
     """Function to wipe out whole collection"""
     conn = connect()
     db = conn.ZMS[colllection]
-    db.remove({})
+    db.delete_many({})
 
 
 def _fetch_and_save(collection, txt_path, excel_path):
