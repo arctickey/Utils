@@ -1,7 +1,7 @@
 # %%
 import pandas as pd
 import numpy as np
-from read_txt import gather_allels_to_one_key
+from upload_helpers import *
 import math
 
 
