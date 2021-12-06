@@ -6,13 +6,15 @@ from utils.read_txt import read_write_txt
 # %%
 
 
-def wipe_database(colllection):
+def _wipe_database(colllection):
+    """Function to wipe out whole collection"""
     conn = connect()
     db = conn.ZMS[colllection]
     db.remove({})
 
 
-def fetch_and_save(collection, txt_path, excel_path):
+def _fetch_and_save(collection, txt_path, excel_path):
+    """Function to read and write to database excel and txt file from ZMS"""
     txt_df = read_write_txt(txt_path)
     excel_df = read_write_excel(excel_path)
     save_mongo(excel_df, collection=collection)
@@ -21,5 +23,5 @@ def fetch_and_save(collection, txt_path, excel_path):
 
 
 def reload_base(collection, txt_path, excel_path):
-    wipe_database(collection)
-    fetch_and_save(txt_path, excel_path, collection)
+    _wipe_database(collection)
+    _fetch_and_save(collection, txt_path, excel_path)
