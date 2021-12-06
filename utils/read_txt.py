@@ -1,6 +1,6 @@
-
 import pandas as pd
-from upload_helpers import *
+from utils.upload_helpers import *
+
 
 def read_txt(path):
     df = pd.read_table(path)
@@ -19,4 +19,3 @@ def read_write_txt(path, apart_keys=["Próbka"], renamed_apart_keys=["sample"]):
     df_wide = read_txt(path)
     out = gather_allels_to_one_key(df_wide, apart_keys, renamed_apart_keys)
     return out
-
