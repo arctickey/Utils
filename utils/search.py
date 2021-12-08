@@ -70,7 +70,7 @@ def insert_with_drop_dubs(record_to_insert:dict):
        Assuming max one duplicate exist in data base 
     """
     db = connect()
-    profiles, nr_of_errors = mongoDB_search(record_to_insert)
+    profiles, nr_of_errors,_ = mongoDB_search(record_to_insert)
     if len(nr_of_errors) == 0 :
         dict_to_insert = {}
         dict_to_insert['allels']= record_to_insert
