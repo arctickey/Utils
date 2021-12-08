@@ -75,7 +75,7 @@ def insert_with_drop_dubs(record_to_insert:dict):
         dict_to_insert = {}
         dict_to_insert['allels']= record_to_insert
 
-        save_mongo(dict_to_insert)
+        save_mongo([dict_to_insert])
         return
     else:
         if len(profiles[0]["allels"])> len(record_to_insert):
