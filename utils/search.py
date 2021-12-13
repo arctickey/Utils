@@ -31,7 +31,7 @@ def eval_sample(sample, pattern, keys, nr_of_errors_possible=0):
             return 99,0
         if error_flg == 1 : 
             allels_with_error.append(i)
-            print(i)
+            
             
         
     return nr_of_errors, allels_with_error
