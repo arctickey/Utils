@@ -1,5 +1,6 @@
 import pandas as pd
 from utils.upload_helpers import *
+from utils.connect import save_mongo
 
 
 def read_txt(path):
@@ -15,7 +16,8 @@ def read_txt(path):
     return df_wide
 
 
-def read_write_txt(path, apart_keys=["Próbka"], renamed_apart_keys=["sample"]):
+def read_write_txt(path, apart_keys=["Próbka"], renamed_apart_keys=["opinion"]):
     df_wide = read_txt(path)
     out = gather_allels_to_one_key(df_wide, apart_keys, renamed_apart_keys)
+    save_mongo(out)
     return out
