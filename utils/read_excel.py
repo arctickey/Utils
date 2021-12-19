@@ -80,9 +80,10 @@ def read_write_excel(path):
     data = pd.concat([data, lonely_ones], axis=1)
     data["AMEL"] = data["AMEL"].apply(take_data_from_str_tuple)
     cols = ["opinia", "Próbka"]
-    data["opinia"] = data[cols].apply(lambda row: "_".join(row.values.astype(str)), axis=1)
+    data["opinion"] = data[cols].apply(lambda row: "_".join(row.values.astype(str)), axis=1)
+    data.drop(cols, axis=1, inplace=True)
     data_dict = save_prepare(data)
-    apart_keys = ["opinia"]
+    apart_keys = ["opinion"]
     renamed_apart_keys = ["opinion"]
     df = gather_allels_to_one_key(data_dict, apart_keys, renamed_apart_keys)
     save_mongo(df)
