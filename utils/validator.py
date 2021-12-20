@@ -49,8 +49,6 @@ def validate_profile(profile, sex_allels=["AMEL"], check_id=False):
     for key in to_remove:
         profile["allels"].pop(key, None)
 
-    print(profile["allels"])
-
     # Numeric markers
     numeric_markers = set(profile["allels"].keys()) - set(sex_allels)
     for key in numeric_markers:
