@@ -9,6 +9,8 @@ def validate_profile(profile, sex_allels=["AMEL"]):
             - under all keys there is a string input inside lists
             - values are comma separated
             - dot is used for fractions notation
+            - only X, Y, number characters accepted
+            - removes empty allels
         Example: {"allels": {"AMEL": ["X", "X"], "example": ["1.1", "2"]}, "opinion": "xyz"}
     :param sex_allels: markers names for allels defining sex i.e. AMEL
     :returns:
@@ -18,20 +20,33 @@ def validate_profile(profile, sex_allels=["AMEL"]):
     """
     # Preprocess all allels
     for key, allel in profile["allels"].items():
-        if allel:
-            for value in allel:
+        if allel and key not in sex_allels:
+            for i, value in enumerate(allel):
                 # Remove spaces
                 value = "".join(value.split())
+                value = value.strip()
                 # Check for disallowed characters
-                if bool(re.search(r"[^A-Za-z0-9\.]+", value)):
+                if not bool(re.search(r"^[0-9]+\.?[0-9]*$", value)) and value != "":
                     return (
                         False,
                         "ERROR: Wprowadzono niedozwolone znaki.",
                         profile,
                     )
+                allel[i] = value
             # Remove empty strings
             allel[:] = [x for x in allel if x]
             profile["allels"][key] = allel
+
+    # Remove empty allels
+    to_remove = []
+    for key, value in profile["allels"].items():
+        if profile["allels"][key] == []:
+            to_remove.append(key)
+
+    for key in to_remove:
+        profile["allels"].pop(key, None)
+
+    print(profile["allels"])
 
     # Numeric markers
     numeric_markers = set(profile["allels"].keys()) - set(sex_allels)
