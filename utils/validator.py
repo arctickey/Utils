@@ -25,6 +25,7 @@ def validate_profile(profile, sex_allels=["AMEL"], check_id=False):
             for i, value in enumerate(allel):
                 if value is None:
                     value = ""
+                value = str(value)
                 # Remove spaces
                 value = "".join(value.split())
                 value = value.strip()
