@@ -70,10 +70,10 @@ def insert_with_drop_dubs(record_to_insert:dict):
        Assuming max one duplicate exist in data base 
     """
     db = connect()
-    profiles, nr_of_errors,_ = mongoDB_search(record_to_insert)
+    profiles, nr_of_errors,_ = mongoDB_search(record_to_insert['allels'])
     if len(nr_of_errors) == 0 :
         dict_to_insert = {}
-        dict_to_insert['allels']= record_to_insert
+        dict_to_insert= record_to_insert
 
         save_mongo([dict_to_insert])
         return
@@ -83,10 +83,10 @@ def insert_with_drop_dubs(record_to_insert:dict):
             db['ZMS']['profile'].find_one_and_update({"_id": profiles[0]['_id']}, 
                                  {"$set": {"Duplicate": comment}})
         else :
-             comment = profiles[0]['allels']
+             comment = profiles[0]
              
-             dict_to_insert = {}
-             dict_to_insert['allels']= record_to_insert
+             
+             dict_to_insert= record_to_insert
              dict_to_insert['Duplicate'] = comment
              print(dict_to_insert)
              save_mongo([dict_to_insert])
@@ -99,16 +99,22 @@ def population_stats():
     {allel_name = {allel_val_1 : [number_of_occurenc, precent_occurenc_in_population ], ...},...}  """
     pointer = acces_mongo_base()
 
+    def to_int_if_needed(x):
+        if type(x)=='str': 
+            return x 
+        else : 
+            return float(x)
+        
     allels_dict = {}
     for i in pointer: 
         for key,vals in i['allels'].items():
             if key in allels_dict.keys(): 
                 for k in vals:
-                    allels_dict[key].append(k)
+                    allels_dict[key].append(to_int_if_needed(k))
             else:
                 allels_dict[key] = []
                 for k in vals:
-                    allels_dict[key].append(k)
+                    allels_dict[key].append(to_int_if_needed(k))
     
     for key,val in allels_dict.items():
         values_table = pd.Series(val).value_counts().reset_index()
