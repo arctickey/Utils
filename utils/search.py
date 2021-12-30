@@ -100,10 +100,11 @@ def population_stats():
     pointer = acces_mongo_base()
 
     def to_int_if_needed(x):
-        if type(x)=='str': 
-            return x 
-        else : 
-            return float(x)
+        try:
+            x=float(x)
+            return x
+        except ValueError:
+            return x
         
     allels_dict = {}
     for i in pointer: 
