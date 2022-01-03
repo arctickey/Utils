@@ -64,18 +64,18 @@ def mongoDB_search(pattern: dict, nr_of_errors_possible=0):
 
 
 
-def insert_with_drop_dubs(con,record_to_insert:dict):
+def insert_with_drop_dubs(record_to_insert:dict, db: str = "ZMS", collection: str = "profile"):
     """Remove dupcilates if exist and add record to the data base.
        Work befoer inserting each record
        Assuming max one duplicate exist in data base 
     """
-    
+    con = connect()[db]
     profiles, nr_of_errors,t= mongoDB_search(record_to_insert['allels'])
     if len(nr_of_errors) == 0 :
         dict_to_insert = {}
         dict_to_insert= record_to_insert
 
-        save_mongo([dict_to_insert])
+        save_mongo([dict_to_insert],db,collection)
         return
     else:
         if len(profiles[0]["allels"])> len(record_to_insert):
@@ -88,11 +88,10 @@ def insert_with_drop_dubs(con,record_to_insert:dict):
              
              dict_to_insert= record_to_insert
              dict_to_insert['Duplicate'] = comment
-             print(dict_to_insert)
-             save_mongo([dict_to_insert])
+             
+             save_mongo([dict_to_insert],db,collection)
              con['profile'].delete_one({'_id':ObjectId(profiles[0]['_id'])}) 
     return
-
  
 def population_stats(): 
     """Return statistinc in the form 
