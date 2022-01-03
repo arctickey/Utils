@@ -24,6 +24,8 @@ def read_mongo(db: str = "ZMS", collection: str = "profile", no_id: bool = False
 def save_mongo(df: list, db: str = "ZMS", collection: str = "profile"):
     """Read from dict and saves to MongoDB"""
     assert isinstance(df,list), 'Please pass list of dicts' 
+    for i in df:
+        i['CreatedDate'] = datetime.now()
     conn = connect()
     db = conn[db]
     collection = db[collection]
