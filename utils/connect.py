@@ -2,9 +2,11 @@ from pymongo import MongoClient
 from datetime import datetime
 
 
-def connect(host="localhost", port=27017):
+def connect(host="mongo", port=27017):
     """Connect to MongoDB"""
-    return MongoClient(host, port)
+    username = "root"
+    password = "password"
+    return MongoClient(host=host, port=port, username=username, password=password)
 
 
 def is_id(x):
@@ -24,17 +26,14 @@ def read_mongo(db: str = "ZMS", collection: str = "profile", no_id: bool = False
 
 def save_mongo(df: list, db: str = "ZMS", collection: str = "profile"):
     """Read from dict and saves to MongoDB"""
-    assert isinstance(df,list), 'Please pass list of dicts' 
+    assert isinstance(df, list), "Please pass list of dicts"
     for i in df:
-        i['CreatedDate'] = datetime.now()
+        i["CreatedDate"] = datetime.now()
     conn = connect()
     db = conn[db]
     collection = db[collection]
     collection.insert_many(df)
     return True
-
-
-
 
 
 def acces_mongo_base(db: str = "ZMS", collection: str = "profile"):
