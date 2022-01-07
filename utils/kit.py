@@ -55,9 +55,6 @@ def update_kit(db, kit_to_modify_name, new_kit):
     return
 
 
-# %%
-
-
 def load_all_kits():
     client = connect()
     db = client.ZMS
