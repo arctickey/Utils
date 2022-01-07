@@ -2,11 +2,10 @@ from pymongo import MongoClient
 from datetime import datetime
 
 
-def connect(host="mongo", port=27017):
+def connect():
     """Connect to MongoDB"""
-    username = "root"
-    password = "password"
-    return MongoClient(host=host, port=port, username=username, password=password, authSource="admin")
+    uri = "mongodb://root:password@mongo:27017/ZMS?authSource=admin"
+    return MongoClient(uri)
 
 
 def is_id(x):
