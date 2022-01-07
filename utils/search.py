@@ -144,7 +144,7 @@ def parrenthod_check(p_father: dict,mother: dict,child: dict):
     father_error_nr = 0 
     father_error_allels = []
 
-    for i in set(p_father.keys()).intersection(set(child.keys())).difference(set(mother_error_allels)):
+    for i in set(p_father.keys()).intersection(set(child.keys())).intersection(set(mother_error_allels)):
         # Creating posibitys 
         current_key_possibilites=[
         [p_father[i][0],mother[i][0]],
