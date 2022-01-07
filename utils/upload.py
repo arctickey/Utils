@@ -9,7 +9,7 @@ from utils.read_txt import read_write_txt
 def _wipe_database(colllection):
     """Function to wipe out whole collection"""
     conn = connect()
-    db = conn[colllection]
+    db = conn.ZMS[colllection]
     db.remove({})
 
 

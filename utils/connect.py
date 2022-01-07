@@ -4,7 +4,7 @@ from datetime import datetime
 
 def connect():
     """Connect to MongoDB"""
-    uri = "mongodb://root:password@mongo:27017/ZMS?authSource=admin"
+    uri = "mongodb://root:password@mongo:27017/?authSource=admin"
     return MongoClient(uri)
 
 
@@ -14,7 +14,8 @@ def is_id(x):
 
 def read_mongo(db: str = "ZMS", collection: str = "profile", no_id: bool = False):
     """Read from Mongo and Store into DataFrame"""
-    db = connect()
+    conn = connect()
+    db = conn[db]
     collection = db[collection]
     df = list(collection.find())
     if no_id:
@@ -27,7 +28,8 @@ def save_mongo(df: list, db: str = "ZMS", collection: str = "profile"):
     assert isinstance(df, list), "Please pass list of dicts"
     for i in df:
         i["CreatedDate"] = datetime.now()
-    db = connect()
+    conn = connect()
+    db = conn[db]
     collection = db[collection]
     collection.insert_many(df)
     return True
