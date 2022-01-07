@@ -146,6 +146,7 @@ def parrenthod_check(p_father: dict,mother: dict,child: dict):
 
     for i in set(p_father.keys()).intersection(set(child.keys())).intersection(set(mother_error_allels)):
         # Creating posibitys 
+        if len(p_father[i]) < 2 or len(mother[i])<2 : continue
         current_key_possibilites=[
         [p_father[i][0],mother[i][0]],
         [p_father[i][1],mother[i][1]],
