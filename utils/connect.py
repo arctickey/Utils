@@ -6,7 +6,7 @@ def connect(host="mongo", port=27017):
     """Connect to MongoDB"""
     username = "root"
     password = "password"
-    return MongoClient(host=host, port=port, username=username, password=password)
+    return MongoClient(host=host, port=port, username=username, password=password, authSource="admin")
 
 
 def is_id(x):
