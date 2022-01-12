@@ -1,6 +1,6 @@
 import pandas as pd
 from utils.upload_helpers import *
-from utils.connect import save_mongo
+from utils.search import insert_with_drop_dubs
 
 
 def read_txt(path):
@@ -19,5 +19,6 @@ def read_txt(path):
 def read_write_txt(path, apart_keys=["Próbka"], renamed_apart_keys=["opinion"]):
     df_wide = read_txt(path)
     out = gather_allels_to_one_key(df_wide, apart_keys, renamed_apart_keys)
-    save_mongo(out)
+    for record in out:
+        insert_with_drop_dubs(record)
     return out
