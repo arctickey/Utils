@@ -70,13 +70,15 @@ def insert_with_drop_dubs(record_to_insert:dict, db: str = "ZMS", collection: st
        Assuming max one duplicate exist in data base 
     """
     con = connect()[db]
+    if con['profile'].count_documents({ 'opinion': record_to_insert['opinion'] }, limit = 1) != 0:
+        return False
     profiles, nr_of_errors,t= mongoDB_search(record_to_insert['allels'])
     if len(nr_of_errors) == 0 :
         dict_to_insert = {}
         dict_to_insert= record_to_insert
 
         save_mongo([dict_to_insert],db,collection)
-        return
+        return True
     else:
         if len(profiles[0]["allels"])> len(record_to_insert):
             comment = record_to_insert
@@ -91,7 +93,7 @@ def insert_with_drop_dubs(record_to_insert:dict, db: str = "ZMS", collection: st
              
              save_mongo([dict_to_insert],db,collection)
              con['profile'].delete_one({'_id':ObjectId(profiles[0]['_id'])}) 
-    return
+    return True
  
 def population_stats(): 
     """Return statistinc in the form 
@@ -146,6 +148,7 @@ def parrenthod_check(p_father: dict,mother: dict,child: dict):
 
     for i in set(p_father.keys()).intersection(set(child.keys())).difference(set(mother_error_allels)):
         # Creating posibitys 
+        if len(p_father[i]) < 2 or len(mother[i])<2 : continue
         current_key_possibilites=[
         [p_father[i][0],mother[i][0]],
         [p_father[i][1],mother[i][1]],
