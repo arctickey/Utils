@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 from utils.upload_helpers import *
 import math
-from utils.connect import save_mongo
+from utils.search import insert_with_drop_dubs
+
 
 
 def take_cols(path):
@@ -89,5 +90,6 @@ def read_write_excel(path):
     apart_keys = ["opinion"]
     renamed_apart_keys = ["opinion"]
     df = gather_allels_to_one_key(data_dict, apart_keys, renamed_apart_keys)
-    save_mongo(df)
+    for record in df:
+        insert_with_drop_dubs(record)
     return df
