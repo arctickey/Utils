@@ -124,7 +124,7 @@ def population_stats():
         # Creating output dict 
         new_dict = {}
         for i in range(values_table.shape[0]): 
-            new_dict[values_table.iloc[i,0]]=[int(values_table.iloc[i,1]),round(values_table.iloc[i,1]/sum_of_all*100,2)]
+            new_dict[values_table.iloc[i,0]]=[int(values_table.iloc[i,1]),values_table.iloc[i,1]/sum_of_all*100]
         allels_dict[key]=new_dict
     return allels_dict
 
