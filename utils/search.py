@@ -78,7 +78,7 @@ def insert_with_drop_dubs(record_to_insert:dict, db: str = "ZMS", collection: st
         dict_to_insert= record_to_insert
 
         save_mongo([dict_to_insert],db,collection)
-        return True,[],0
+        return True,record_to_insert['opinion'],0
     else:
         if len(profiles[0]["allels"])> len(record_to_insert):
             comment = record_to_insert
