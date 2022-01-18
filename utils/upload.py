@@ -14,7 +14,7 @@ def _wipe_database(colllection):
     db.remove({})
 
 
-s
+
 
 
 def _fetch_and_save(txt_path, excel_path):
