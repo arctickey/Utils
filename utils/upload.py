@@ -14,6 +14,9 @@ def _wipe_database(colllection):
     db.remove({})
 
 
+s
+
+
 def _fetch_and_save(txt_path, excel_path):
     """Function to read and write to database excel and txt file from ZMS"""
     txt_df = read_write_txt(txt_path)
