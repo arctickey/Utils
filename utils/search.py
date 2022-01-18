@@ -84,6 +84,7 @@ def insert_with_drop_dubs(record_to_insert:dict, db: str = "ZMS", collection: st
             comment = record_to_insert
             con['profile'].find_one_and_update({"_id": profiles[0]['_id']}, 
                                  {"$set": {"Duplicate": comment}})
+            return True,profiles[0]['opinion']
         else :
              comment = profiles[0]
              
@@ -93,7 +94,7 @@ def insert_with_drop_dubs(record_to_insert:dict, db: str = "ZMS", collection: st
              
              save_mongo([dict_to_insert],db,collection)
              con['profile'].delete_one({'_id':ObjectId(profiles[0]['_id'])}) 
-    return False,profiles[0]['opinion']
+             return True,record_to_insert['opinion']
  
 def population_stats(): 
     """Return statistinc in the form 
