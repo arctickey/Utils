@@ -71,14 +71,14 @@ def insert_with_drop_dubs(record_to_insert:dict, db: str = "ZMS", collection: st
     """
     con = connect()[db]
     if con['profile'].count_documents({ 'opinion': record_to_insert['opinion'] }, limit = 1) != 0:
-        return False,0
+        return False,[]
     profiles, nr_of_errors,t= mongoDB_search(record_to_insert['allels'])
     if len(nr_of_errors) == 0 :
         dict_to_insert = {}
         dict_to_insert= record_to_insert
 
         save_mongo([dict_to_insert],db,collection)
-        return True,1
+        return True,[]
     else:
         if len(profiles[0]["allels"])> len(record_to_insert):
             comment = record_to_insert
