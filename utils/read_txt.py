@@ -17,7 +17,7 @@ def read_txt(path):
     return df_wide
 
 
-def read_write_txt(path, apart_keys=["Próbka"], renamed_apart_keys=["opinion"]):
+def read_write_txt(path, apart_keys=["opinion"], renamed_apart_keys=["opinion"]):
     df_wide = read_txt(path)
     out = gather_allels_to_one_key(df_wide, apart_keys, renamed_apart_keys)
     return out
