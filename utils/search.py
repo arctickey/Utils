@@ -84,7 +84,7 @@ def insert_with_drop_dubs(record_to_insert:dict, db: str = "ZMS", collection: st
             comment = record_to_insert
             con['profile'].find_one_and_update({"_id": profiles[0]['_id']}, 
                                  {"$set": {"Duplicate": comment}})
-            return True,profiles[0]['opinion'],record_to_insert['opinion']
+            return True,profiles[0]['opinion'],profiles[0]['opinion']
         else :
              comment = profiles[0]
              
