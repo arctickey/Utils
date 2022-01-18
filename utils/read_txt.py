@@ -10,7 +10,7 @@ def read_txt(path):
     df.drop(["Allel_1", "Allel_2", "Panel"], axis=1, inplace=True)
     df_wide = df.pivot(index="Sample_Name", columns="Marker", values="Allel")
     df_wide.reset_index(inplace=True, drop=False)
-    df_wide.rename({"Sample_Name": "Próbka"}, axis=1, inplace=True)
+    df_wide.rename({"Sample_Name": "opinion"}, axis=1, inplace=True)
     to_delete = ["K+", "ladder"]
     df_wide = df_wide.loc[~df_wide["opinion"].isin(to_delete)]
     df_wide = df_wide.to_dict(orient="records")
