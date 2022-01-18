@@ -89,6 +89,4 @@ def read_write_excel(path):
     apart_keys = ["opinion"]
     renamed_apart_keys = ["opinion"]
     df = gather_allels_to_one_key(data_dict, apart_keys, renamed_apart_keys)
-    for record in df:
-        insert_with_drop_dubs(record)
     return df
