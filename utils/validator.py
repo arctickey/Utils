@@ -1,5 +1,5 @@
 import re
-
+import math
 
 def validate_profile(profile, sex_allels=["AMEL"], check_id=False):
     """Validates correctness of the profile record and preprocess input.
@@ -22,7 +22,7 @@ def validate_profile(profile, sex_allels=["AMEL"], check_id=False):
     # Preprocess all allels
     for key, allel in profile["allels"].items():
         for i, value in enumerate(allel):
-            if value is None or value == "nan":
+            if value is None or isinstance(value, type(math.nan)):
                 value = ""
             value = str(value)
             # Remove spaces
