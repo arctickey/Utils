@@ -80,17 +80,23 @@ def insert_with_drop_dubs(record_to_insert:dict, db: str = "ZMS", collection: st
         save_mongo([dict_to_insert],db,collection)
         return True,record_to_insert['opinion'],0
     else:
-        if len(profiles[0]["allels"])> len(record_to_insert):
-            comment = record_to_insert
+        if len(profiles[0]["allels"])> len(record_to_insert["allels"]):
+            comment = [record_to_insert]
+            if "Duplicate" in profiles[0].keys();
+                comment = profiles[0]+ comment
             con['profile'].find_one_and_update({"_id": profiles[0]['_id']}, 
                                  {"$set": {"Duplicate": comment}})
             return True,profiles[0]['opinion'],profiles[0]['opinion']
         else :
-             comment = profiles[0]
+             
              
              
              dict_to_insert= record_to_insert
-             dict_to_insert['Duplicate'] = comment
+             if "Duplicate" in profiles[0].keys()
+                comment = profiles[0]['Duplicate'] + [{i,j for i,j in profiles[0].items() if i!= 'Duplicate'}]
+             else : 
+                comment = [profile[0]]
+             dict_to_insert['Duplicate'] = [comment]
              
              save_mongo([dict_to_insert],db,collection)
              con['profile'].delete_one({'_id':ObjectId(profiles[0]['_id'])}) 
