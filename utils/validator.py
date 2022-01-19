@@ -22,7 +22,7 @@ def validate_profile(profile, sex_allels=["AMEL"], check_id=False):
     # Preprocess all allels
     for key, allel in profile["allels"].items():
         for i, value in enumerate(allel):
-            if value is None or value is "nan":
+            if value is None or value == "nan":
                 value = ""
             value = str(value)
             # Remove spaces
