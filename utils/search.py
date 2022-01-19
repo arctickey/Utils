@@ -82,7 +82,7 @@ def insert_with_drop_dubs(record_to_insert:dict, db: str = "ZMS", collection: st
     else:
         if len(profiles[0]["allels"])> len(record_to_insert["allels"]):
             comment = [record_to_insert]
-            if "Duplicate" in profiles[0].keys();
+            if "Duplicate" in profiles[0].keys():
                 comment = profiles[0]+ comment
             con['profile'].find_one_and_update({"_id": profiles[0]['_id']}, 
                                  {"$set": {"Duplicate": comment}})
@@ -92,7 +92,7 @@ def insert_with_drop_dubs(record_to_insert:dict, db: str = "ZMS", collection: st
              
              
              dict_to_insert= record_to_insert
-             if "Duplicate" in profiles[0].keys()
+             if "Duplicate" in profiles[0].keys():
                 comment = profiles[0]['Duplicate'] + [{i,j for i,j in profiles[0].items() if i!= 'Duplicate'}]
              else : 
                 comment = [profile[0]]
