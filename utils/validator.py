@@ -1,7 +1,8 @@
 import re
 import math
+import copy
 
-def validate_profile(profile, sex_allels=["AMEL"], check_id=False):
+def validate_profile(input, sex_allels=["AMEL"], check_id=False):
     """Validates correctness of the profile record and preprocess input.
     :param profile: profile to validate
         Assumptions:
@@ -19,10 +20,11 @@ def validate_profile(profile, sex_allels=["AMEL"], check_id=False):
         - message - if profile is incorrect - error message to user
         - profile - preprocessed profile with good data types
     """
+    profile = copy.deepcopy(input)
     # Preprocess all allels
     for key, allel in profile["allels"].items():
         for i, value in enumerate(allel):
-            if value is None or isinstance(value, type(math.nan)):
+            if value is None or (value != value):
                 value = ""
             value = str(value)
             # Remove spaces
@@ -40,7 +42,7 @@ def validate_profile(profile, sex_allels=["AMEL"], check_id=False):
         # Remove empty strings
         allel[:] = [x for x in allel if x]
         profile["allels"][key] = allel
-
+    
     # Remove empty allels
     to_remove = []
     for key, value in profile["allels"].items():
