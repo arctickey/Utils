@@ -93,7 +93,7 @@ def insert_with_drop_dubs(record_to_insert:dict, db: str = "ZMS", collection: st
                 comment = profiles[0]['Duplicate'] + [{i:j for i,j in profiles[0].items() if i!= 'Duplicate'}]
              else : 
                 comment = [profiles[0]]
-             dict_to_insert['Duplicate'] = [comment]
+             dict_to_insert['Duplicate'] = comment
              
              save_mongo([dict_to_insert],db,collection)
              con['profile'].delete_one({'_id':ObjectId(profiles[0]['_id'])}) 
