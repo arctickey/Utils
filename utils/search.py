@@ -76,6 +76,7 @@ def insert_with_drop_dubs(record_to_insert:dict, db: str = "ZMS", collection: st
     if len(nr_of_errors) == 0 :
         dict_to_insert = {}
         dict_to_insert= record_to_insert
+        dict_to_insert
 
         save_mongo([dict_to_insert],db,collection)
         return True,record_to_insert['opinion'],0
